@@ -1,6 +1,6 @@
 const express = require('express');
 const db = require('./db');
-
+require('dotenv').config();
 const app = express();
 
 const bodyParser = require('body-parser');
@@ -19,6 +19,8 @@ const menuRoutes = require('./routes/menuRoutes');
 // use the routes
 app.use('/person', personRoutes);
 app.use('/menu', menuRoutes);
+
+const PORT = process.env.PORT || 8000 // Use 3000 as a default if PORT is not defined
 
 
 app.listen(8000, () => {
