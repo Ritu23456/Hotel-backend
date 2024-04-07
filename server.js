@@ -3,11 +3,25 @@ const db = require('./db');
 require('dotenv').config();
 const app = express();
 
+
 const bodyParser = require('body-parser');
 app.use(bodyParser.json());  // req.body
 
 
-app.get('/', (req, res) => {
+const passport = require('./auth');
+// final how to use passport
+app.use(passport.initialize())
+const localAuthMiddleware = passport.authenticate('local', {session: false});
+
+// Middleware Function
+const logRequest = (req, res, next) => {
+  console.log(`[${new Date().toLocaleString()}] Request Made to ${req.originalUrl}`)
+  next(); // Move on to the next 
+}
+app.use(logRequest);
+
+
+app.get('/',localAuthMiddleware, (req, res) => {
   res.send('Hello World');
 })
 
